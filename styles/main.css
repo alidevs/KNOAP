@@ -1,0 +1,48 @@
+:root {
+	font-family: Poppins;
+	color: black;
+
+	--bg-color: #F7FAF7;
+	--knoap-green: #0F9E7F;
+	--cascade: #86ABA1;
+	--willow-brook: #E1F0E1;
+	--light-gray: #EBEFEE;
+	--dark-gray: #B3B9BD;
+	--red: #C05555;
+
+	--grade-4: black;
+	--grade-3: var(--red);
+	--grade-2: #F0A500;
+	--grade-1: #7C9473;
+	--grade-0: #75CFC2;
+	--grade-no: #C4C4C4;
+}
+
+body {
+	background-color: var(--bg-color);
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+img {
+	pointer-events: none;
+	user-select: none;
+}
+
+caption {
+	padding: 0;
+	color: var(--dark-gray);
+	font-size: calc(0.4rem + 0.4vw);
+	text-transform: uppercase;
+}
