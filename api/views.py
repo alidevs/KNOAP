@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import pyrebase
+import datetime
 
 config = {
 	"apiKey": "AIzaSyAEF7iVukPX1i3uN046xcisF0lQSMe-YqA",
@@ -20,7 +21,7 @@ def home(request):
 	if request.session.has_key("email"):
 		email = request.session['email']
 		print(f"Signed in as {email}")
-		return render(request, 'Home.html', { "email": email })
+		return render(request, 'Home.html', {"email": email})
 	else:
 		print("You need to login")
 		return redirect("/login/")
@@ -31,7 +32,7 @@ def login(request):
 	if request.method == "GET":
 		if request.session.has_key('email'):
 			print(f"Session key {request.session['email']}")
-			return redirect('/', { "email": request.session['email'] })
+			return redirect('/', {"email": request.session['email']})
 		else:
 			return render(request, 'Login.html')
 
@@ -49,7 +50,7 @@ def login(request):
 			print(f'Failed to login {e}')
 			return render("Login.html", {"message": message})
 
-		return redirect("/", { "email": request.session["email"] })
+		return redirect("/", {"email": request.session["email"]})
 
 
 def logout(request):
@@ -57,7 +58,7 @@ def logout(request):
 		print(f"Logging out of {request.session['email']}")
 		del request.session['email']
 	except Exception as e:
-		print(f"Failed to logout\n{ str(e) }")
+		print(f"Failed to logout\n{str(e)}")
 	return redirect("/login/")
 
 
@@ -97,3 +98,36 @@ def reset(request):
 		except:
 			message = "Something went wrong, Please check the email you provided is registered or not"
 			return render(request, "Reset.html", {"msg": message})
+
+
+def add_patient(request):
+	"""
+
+		:type request: object
+		"""
+	firstName = request.POST.get('fname')
+	lastName = request.POST.get('lname')
+	gender = request.POST.get('gender')
+	birth = request.POST.get('Birthday')
+	city = request.POST.get('City')
+	phone = request.POST.get('Mobile')
+	street = request.POST.get('Street')
+	zipCode = request.POST.get('zip')
+	patientEmail = request.POST.get('email')
+	date = datetime.date.today()
+	doctor = request.session["email"]
+
+	data = {'firstName': firstName
+		, 'lastName': lastName
+		, 'gender': gender
+		, 'birth': birth
+		, 'city': city
+		, 'phone': phone
+		, 'street': street
+		, 'zipCode': zipCode
+		, 'email': patientEmail
+		, 'date': date
+		, 'doctorEmail': doctor}
+	database.child("patients").path(data)
+
+	return render(request, "Home.html")
