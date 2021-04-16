@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,8 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+dotenv_file = os.path.join(BASE_DIR, '.env')
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&2g7h6o&l$_h$e!2gbp^@t!x9utf%7#yt5at34^249#l+tuy9b'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +82,13 @@ WSGI_APPLICATION = 'KNOAP.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'fsqraegp',
+        'USER': 'fsqraegp',
+        'PASSWORD': 'Rn0_LwpMfywvkt26V_Ipx2RpkSJLxElb',
+        'HOST': 'john.db.elephantsql.com',
+        'PORT': '5432',
+
     }
 }
 
@@ -114,6 +125,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+APPEND_SLASH=False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

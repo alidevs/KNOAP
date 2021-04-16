@@ -1,25 +1,19 @@
+import os
+from dotenv import load_dotenv
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-import pyrebase
 import datetime
+from api.Database import Database
 
-config = {
-	"apiKey": "AIzaSyAEF7iVukPX1i3uN046xcisF0lQSMe-YqA",
-	"authDomain": "knoap-a1063.firebaseapp.com",
-	"databaseURL": "https://knoap-a1063-default-rtdb.europe-west1.firebasedatabase.app",
-	"projectId": "knoap-a1063",
-	"storageBucket": "knoap-a1063.appspot.com",
-	"messagingSenderId": "631782163056",
-	"appId": "1:631782163056:web:457b4d40ea69c1b8d0eab5",
-}
+from django.views.decorators.csrf import csrf_exempt
 
-firebase = pyrebase.initialize_app(config)
-auth = firebase.auth()
-database = firebase.database()
+database = Database()
 
 
 def home(request):
-	if request.session.has_key("email"):
-		email = request.session['email']
+	# GET /
+	if request.session.has_key("user"):
+		email = request.session['user']['email']
 		print(f"Signed in as {email}")
 		return render(request, 'Home.html', {"email": email})
 	else:
@@ -27,41 +21,56 @@ def home(request):
 		return redirect("/login/")
 
 
+@csrf_exempt
 def login(request):
 	# GET /login
 	if request.method == "GET":
 		if request.session.has_key('email'):
-			print(f"Session key {request.session['email']}")
-			return redirect('/', {"email": request.session['email']})
+			return JsonResponse({"email": request.session['email']})
 		else:
 			return render(request, 'Login.html')
 
 	# POST /login
 	elif request.method == "POST":
+
 		input_email = request.POST.get('email')
 		input_password = request.POST.get('password')
 		print(f'Email {input_email}\t\tPassword {input_password}')
 
-		try:
-			user = auth.sign_in_with_email_and_password(input_email, input_password)
-			request.session["email"] = input_email
-		except Exception as e:
-			message = str(e)
-			print(f'Failed to login {e}')
-			return render("Login.html", {"message": message})
+		query = """	SELECT * FROM KNOAP.doctor
+					WHERE email = '%s'
+					AND password = '%s';
+		""" % (input_email, input_password)
+		records = database.query(query)
 
-		return redirect("/", {"email": request.session["email"]})
+		if type(records) is not JsonResponse:
+			if records['count'] > 0:
+				request.session['user'] = records['records'][0]
+				return JsonResponse(records, content_type="application/json")
+			else:
+				return JsonResponse({'error': 'Email or password may be incorrect'})
+		return records
+
+
+# return redirect("/", {"email": request.session["email"]})
 
 
 def logout(request):
-	try:
-		print(f"Logging out of {request.session['email']}")
-		del request.session['email']
-	except Exception as e:
-		print(f"Failed to logout\n{str(e)}")
-	return redirect("/login/")
+	# GET /logout
+	if request.method == "GET":
+		try:
+			# print(f"Logging out of {request.session['email']}")
+			del request.session['user']
+			return JsonResponse({"message": "Logged out successfully"})
+		except Exception as e:
+			# print(f"Failed to logout\n{query_str(e)}")
+			return JsonResponse({"error": e})
 
 
+# return redirect("/login/")
+
+
+@csrf_exempt
 def register(request):
 	# GET /register
 	if request.method == "GET":
@@ -72,15 +81,17 @@ def register(request):
 		input_email = request.POST.get('email')
 		input_password = request.POST.get('password')
 
-		try:
-			user = auth.create_user_with_email_and_password(input_email, input_password)
-			uid = user['localId']
-			idtoken = request.session['email']
-			print(f'UID\n{uid}\nToken\n{idtoken}')
-		except Exception as e:
-			print(str(e))
-			return render(request, "Register.html")
-		return render(request, "Login.html")
+		query = """INSERT INTO KNOAP.doctor (email, password, authorized)
+						VALUES ('%s', '%s', '%s')
+						returning *;""" % (input_email, input_password, 'n')
+		records = database.query(query)
+		if type(records) is not JsonResponse:
+			request.session['user'] = records[0]
+			return JsonResponse({'records': records}, content_type="application/json")
+		return records
+
+
+# return render(request, "Login.html")
 
 
 def reset(request):
@@ -100,34 +111,51 @@ def reset(request):
 			return render(request, "Reset.html", {"msg": message})
 
 
+@csrf_exempt
 def add_patient(request):
-	"""
+	if request.method == "POST":
+		first_name = request.POST.get('fname')
+		last_name = request.POST.get('lname')
+		gender = request.POST.get('gender')
+		birthday = request.POST.get('birthday')
+		city = request.POST.get('city')
+		phone = request.POST.get('phone')
+		street = request.POST.get('street')
+		zip_code = request.POST.get('zipCode')
+		patient_email = request.POST.get('email')
+		date = datetime.date.today()
+		doctor = request.POST.get('doctorEmail')
+		notes = request.POST.get('notes')
 
-		:type request: object
-		"""
-	firstName = request.POST.get('fname')
-	lastName = request.POST.get('lname')
-	gender = request.POST.get('gender')
-	birth = request.POST.get('Birthday')
-	city = request.POST.get('City')
-	phone = request.POST.get('Mobile')
-	street = request.POST.get('Street')
-	zipCode = request.POST.get('zip')
-	patientEmail = request.POST.get('email')
-	date = datetime.date.today()
-	doctor = request.session["email"]
+		data = {'firstName': first_name,
+				'lastName': last_name,
+				'gender': gender,
+				'birthday': birthday,
+				'city': city,
+				'phone': phone,
+				'street': street,
+				'zipCode': zip_code,
+				'email': patient_email,
+				'date': date,
+				'doctorEmail': doctor,
+				'notes': notes}
 
-	data = {'firstName': firstName
-		, 'lastName': lastName
-		, 'gender': gender
-		, 'birth': birth
-		, 'city': city
-		, 'phone': phone
-		, 'street': street
-		, 'zipCode': zipCode
-		, 'email': patientEmail
-		, 'date': date
-		, 'doctorEmail': doctor}
-	database.child("patients").path(data)
+		query = """INSERT INTO KNOAP.patient (fname, lname, gender, birthday, phone, street, city, zipcode, email, registered, notes, assigned_doctor, last_activity)
+								VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s')
+								RETURNING *;""" % (first_name, last_name, gender, birthday, phone, street, city, zip_code, patient_email, date, notes, doctor, date)
+		records = database.query(query)
+		if type(records) is not JsonResponse:
+			return JsonResponse({'records': records}, content_type="application/json")
+		return records
 
-	return render(request, "Home.html")
+		# return JsonResponse(data)
+	# return render(request, "Home.html")
+	# return render(request, "Home.html", {"message": "Could not add patient"})
+	return JsonResponse({"message": "Could not add patient"})
+
+
+def list_all_doctors(request):
+	print(os.environ.get("HOST"))
+	print(request.session.has_key('user'))
+	records = database.query('SELECT * FROM KNOAP.doctor;')
+	return JsonResponse({'records': records})

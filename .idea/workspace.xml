@@ -5,10 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7a5ce9dd-9112-478b-b40c-8e9cb1a3cfd2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/Database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/KNOAP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/KNOAP.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KNOAP/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/KNOAP/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KNOAP/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/KNOAP/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,6 +31,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="Python Unit Test" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -47,10 +57,11 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="Ignore Files Support" />
   </component>
   <component name="RunManager">
     <configuration name="KNOAP" type="Python.DjangoServer" factoryName="Django server">
@@ -92,13 +103,30 @@
       <workItem from="1616964095407" duration="7296000" />
       <workItem from="1617058278262" duration="1433000" />
       <workItem from="1617061152465" duration="805000" />
-      <workItem from="1617066418403" duration="464000" />
-      <workItem from="1617138021759" duration="960000" />
-      <workItem from="1617139916592" duration="9549000" />
+      <workItem from="1617622246108" duration="919000" />
+      <workItem from="1617665911401" duration="1868000" />
+      <workItem from="1617703232757" duration="633000" />
+      <workItem from="1618261136208" duration="1996000" />
+      <workItem from="1618339006771" duration="3270000" />
+      <workItem from="1618350669417" duration="7291000" />
+      <workItem from="1618431564614" duration="5838000" />
+      <workItem from="1618505550421" duration="11566000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
