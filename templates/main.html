@@ -21,7 +21,7 @@
 <body>
 <div class="header">   
 <div class="logo fadeInLeft animated">
-<img src="{% static 'img/logo.png' %}"/>
+<img src="{% static 'img/logo.png' %}" />
 </div>
 <div class="logout fadeInRight animated">
 <a href="logout/">Logout</a>
@@ -84,7 +84,7 @@
       </a>
       </td>
       <td><a href="/patient/{{ result.id }}/">#{{result.id}}</a></td>
-      <td><a href="#/patient/{{ result.id }}/">{{ result.fname }} </a></td>
+      <td><a href="/patient/{{ result.id }}/">{{ result.fname }} </a></td>
       <td><a href="/patient/{{ result.id }}/">{{ result.lname }} </a></td>
         {{result.grade}}
         <td><div class="grade-{{result.grade}}"></div></td>
