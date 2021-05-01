@@ -20,7 +20,6 @@ from api import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('add/', views.addP),
     path('', views.home),
     path('login/', views.login, name="login"),
     path('register/', views.register, name="register"),
@@ -31,5 +30,3 @@ urlpatterns = [
     path('edit_patient/<int:id>/', views.edit_patient, name='to_patient')
 
 ]
-
-
