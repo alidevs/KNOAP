@@ -82,13 +82,8 @@ WSGI_APPLICATION = 'KNOAP.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fsqraegp',
-        'USER': 'fsqraegp',
-        'PASSWORD': 'Rn0_LwpMfywvkt26V_Ipx2RpkSJLxElb',
-        'HOST': 'john.db.elephantsql.com',
-        'PORT': '5432',
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -131,3 +126,6 @@ APPEND_SLASH=False
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
