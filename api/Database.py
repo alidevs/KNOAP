@@ -48,3 +48,14 @@ class Database:
 			self.connection.close()
 			self.connection = None
 			print("Closing connection")
+
+	def does_patient_exist(self, patient_id):
+		number_of_rows_found = self.query(f"SELECT * FROM KNOAP.patient WHERE id = {patient_id};")['count']
+		print(f"NO OF RO {number_of_rows_found}")
+		return number_of_rows_found == 1
+
+	def insert_new_patient_diagnosis(self, patient_id, prediction, confidence, index):
+		query = """INSERT INTO KNOAP.diagnosis (patient_id, prediction, confidence, index)
+				   VALUES ('%s', '%s', %d, %d) RETURNING *;""" % (patient_id, prediction, confidence, index)
+		result = self.query(query)
+		return result['records'][0]

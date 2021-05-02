@@ -117,4 +117,4 @@ GitHub.sublime-settings
 
 .DS_Store
 .idea
-__pycache__
+api/__pycache__/

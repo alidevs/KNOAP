@@ -1,11 +1,15 @@
 import os
-from dotenv import load_dotenv
+import datetime
+
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-import datetime
-from api.Database import Database
-
+from django.core.files.storage import default_storage
 from django.views.decorators.csrf import csrf_exempt
+
+from api.Database import Database
+from api.TF_MODEL.TestModel import tf_test_model
+
+import piexif
 
 database = Database()
 
@@ -142,13 +146,15 @@ def add_patient(request):
 
 		query = """INSERT INTO KNOAP.patient (fname, lname, gender, birthday, phone, street, city, zipcode, email, registered, notes, assigned_doctor, last_activity)
 								VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s')
-								RETURNING *;""" % (first_name, last_name, gender, birthday, phone, street, city, zip_code, patient_email, date, notes, doctor, date)
+								RETURNING *;""" % (
+		first_name, last_name, gender, birthday, phone, street, city, zip_code, patient_email, date, notes, doctor,
+		date)
 		records = database.query(query)
 		if type(records) is not JsonResponse:
 			return JsonResponse({'records': records}, content_type="application/json")
 		return records
 
-		# return JsonResponse(data)
+	# return JsonResponse(data)
 	# return render(request, "Home.html")
 	# return render(request, "Home.html", {"message": "Could not add patient"})
 	return JsonResponse({"message": "Could not add patient"})
@@ -159,3 +165,29 @@ def list_all_doctors(request):
 	print(request.session.has_key('user'))
 	records = database.query('SELECT * FROM KNOAP.doctor;')
 	return JsonResponse({'records': records})
+
+
+@csrf_exempt
+def add_patient_file(request):
+	patient_id = request.POST.get("patient_id")
+	patient_does_exist = database.does_patient_exist(patient_id)
+	if not patient_does_exist:
+		return JsonResponse({"error": f"No patient exist with id {patient_id}"})
+
+	current_dir = os.path.dirname(__file__)
+	file = request.FILES['image']
+
+	full_path = f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis\\{patient_id}.png"
+	file_name = default_storage.save(full_path, file)
+
+	result = tf_test_model(file_name)
+	inserted_diagnosis = database.insert_new_patient_diagnosis(patient_id, result['prediction'], result['confidence'], result['index'])
+
+	new_path = f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis\\{patient_id}_{inserted_diagnosis['id']}.png"
+	os.rename(full_path, new_path)
+
+	return JsonResponse({"name": file.name, "content-type": file.content_type, "size": file.size, "current_dir": current_dir, "results": result, "inserted_row": inserted_diagnosis})
+
+
+# def test_model(request):
+# 	return JsonResponse({"success": tf_test_model()}, content_type="application/json")
