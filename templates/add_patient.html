@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% load static %}
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> 
+    <link rel="icon" type="image/png" href="{% static 'img/tabicon.png' %}" />
+    <title>KNOAP</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    <!-- CSS Files -->
+    <link href="{% static 'css/newbootstrap.min.css'%}" rel="stylesheet" />
+    <link href="{% static 'css/newstyle.css' %}" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Fonts and Icons -->
+</head>
+ 
+<body>
+ 
+<form action="/add_patient/" method="POST">
+    {% csrf_token %}
+<div class="patient-main-box fadeInDown animated">
+<div class="info-box">
+<h1>Patient infromation</h1> 
+<div class="info-form">
+<div class="info-feild-box">
+<label>First Name</label>
+<input type="text" name="fname" class="info-feild" required>
+</div>
+<div class="info-feild-box">
+<label>Last Name</label>
+<input type="text" name="lname" class="info-feild" required>
+
+
+</div>
+<div class="info-feild-box2">
+<label>Gender</label>
+<select  name="gender" class="info-feild" required>
+        <option value="M" selected>M<option/>
+        <option value="F">F<option/>
+</select>
+</div>
+<div class="info-feild-box">
+<label>Birthday</label>
+<input type="date" name="birthday" class="info-feild" placeholder="yyyy-mm-dd">
+</div>
+<div class="info-feild-box">
+<label>Email</label>
+<input type="email" name="email" class="info-feild">
+</div>
+<div class="info-feild-box2">
+<label>Phone</label>
+<input type="text" name="phone" class="info-feild" >
+</div>
+<div class="info-feild-box">
+<label>Street</label>
+<input type="text" name="street" class="info-feild">
+</div>
+<div class="info-feild-box">
+<label>City</label>
+<input type="text" name="city" class="info-feild">
+</div>
+<div class="info-feild-box2">
+<label>Zip Code</label>
+<input type="text" name="zipCode" class="info-feild" >
+</div>
+</div>
+</div>
+</div>
+
+    <button type="submit" class='patient' onclick="location.href='add_patient/} '">Add patient</button>
+</form>
+
+</body>  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</html>

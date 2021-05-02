@@ -21,12 +21,10 @@
 <body>
 <div class="header">
 <div class="logo fadeInLeft animated">
-<a href="/">
 <img src="{% static 'img/logo.png' %}"/>
-<a/>
 </div>
 <div class="logout fadeInRight animated">
-<a href="logout/">Logout</a>
+<a href="#">Logout</a>
  </div>
 </div>
 {% for patient in patient  %}
@@ -38,8 +36,6 @@
 <a href="#"> <span>{{ patient.fname }}</span>#{{ patient.id }}</a>
 </div>
 <div class="form-options fadeInRight animated">
-<a href="#" style="line-height: 28px;"><img src="{% static 'img/send.png'%}" style="margin-top: 0 !important;"/>Send email</a>
-<a href="/edit_patient/{{ patient.id }}/"><img src="{% static 'img/edit.png'%}"/>edit Patient</a>
 <a href="#"><img src="{% static 'img/close.png' %}"/>Delete Patient</a>
  </div>
  </div>
@@ -54,25 +50,25 @@
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">First name</label>
-    <input type="text" value="{{ patient.fname }}" class="form-control" id="formGroupExampleInput" placeholder="{{ patient.fname }}" readonly>
+    <input type="text" value="{{ patient.fname }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">LAst name</label>
-    <input type="text"value="{{ patient.lname }}" class="form-control" id="formGroupExampleInput" placeholder="{{ patient.lname }}" readonly>
+    <input type="text"value="{{ patient.lname }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Gender</label>
-    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="{{ patient.gender }}" readonly>
+    <input type="text" value = "{{ patient.gender }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Birthday</label>
-    <input type="text" value="{{ patient.birthday }}" class="form-control" id="formGroupExampleInput"  readonly>
+    <input type="text" value="{{ patient.birthday }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 </div>
@@ -80,25 +76,25 @@
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Phone number</label>
-    <input type="text" value="{{ patient.phone }}" class="form-control" id="formGroupExampleInput" placeholder="{{patient.phone}}" readonly>
+    <input type="text" value="{{ patient.phone }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Street</label>
-    <input type="text" value="{{ patient.phone }}" class="form-control" id="formGroupExampleInput" placeholder="65 Bay Street" readonly>
+    <input type="text" value="{{ patient.phone }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">City</label>
-    <input type="text" value="{{ patient.Ahsa }}" class="form-control" id="formGroupExampleInput" placeholder="Jersey" readonly>
+    <input type="text" value="{{ patient.city }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Zip Code</label>
-    <input type="text" value="{{ patient.zipcode }}" class="form-control" id="formGroupExampleInput" placeholder="31892" readonly>
+    <input type="text" value="{{ patient.zipcode }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 </div>
@@ -106,19 +102,19 @@
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Email</label>
-    <input type="text" value="{{ patient.email }}" class="form-control" id="formGroupExampleInput" placeholder="maren.rosser@g.com" readonly>
+    <input type="text" value="{{ patient.email }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Registerd Date</label>
-    <input type="text" value="{{ patient.registered }}" class="form-control" id="formGroupExampleInput" placeholder="16 Feb. 2021" readonly>
+    <input type="text" value="{{ patient.registered }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Last activity</label>
-    <input type="text" value="{{ patient.last_activity }}" class="form-control" id="formGroupExampleInput" placeholder="20 Feb. 2021" readonly>
+    <input type="text" value="{{ patient.last_activity }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 <div class="col-md-3 float-left mt-3">
@@ -133,10 +129,11 @@
 <div class="note-box">
 <h4>Notes</h4>
 <div class="note-comments">
-  <textarea class="form-control textarea"  id="exampleFormControlTextarea1" rows="3" readonly>
+  <textarea class="form-control textarea"  id="exampleFormControlTextarea1" rows="3">
   {{ patient.notes }}
   </textarea>
 
+<a href="/patient/{{ patient.id }}/" class="save-btn">Save</a>
 </div>
 <div class="dr-row">
 <img src="{% static 'img/dr.png'%}"/>
@@ -148,67 +145,6 @@
 </div>
 </div>
 
-<div class="previous-box">
-  <div class="row">
-   <div class="col-md-8 fadeInLeft animated">
-<div class="card mt-4 p-3">
-<div class="previous-heading">
-<h4>Previous diagnosis</h4>
-
-<div class="table-responsive">
-<table class="table mb-0">
-  <thead class="thead-light">
-    <tr>
-      <th>timestamp</th>
-      <th>grade</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="no-border-top"><img src="{% static 'img/cleander.png' %}"> 24.04.2020_02:31:49</td>
-      <td class="no-border-top">Grade 0</td>
-      <td class="no-border-top"><a href="#">Preview</a></td>
-    </tr>
-    <tr>
-      <td><img src="{% static 'img/cleander.png'%}"> 24.04.2020_02:31:49</td>
-      <td>Grade 2</td>
-      <td><a href="#">Preview</a></td>
-    </tr>
-    <tr>
-     <td><img src="{% static 'img/cleander.png'%}"> 24.04.2020_02:31:49</td>
-      <td>Grade 3</td>
-      <td><a href="#">Preview</a></td>
-    </tr>
-
-  </tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div class="col-md-4 fadeInRight animated">
-<div class="card mt-4 p-3">
-<div class="files-box">
-<h4>FILES & DOCUMENTS</h4>
-<a href="#" class="add-file-btn" data-toggle="modal" data-target="#exampleModalScrollable">
-<img src="{% static 'img/file.png'%}"/>
-Add Files
-</a>
-</div>
-<div class="document-table">
-<div class="table-responsive">
-<table class="table mb-0">
-  <tbody>
-    <tr>
-      <td><img src="{% static 'img/x-ray.png'%}"/> x_ray_result.png </td>
-      <td>123kb</td>
-    </tr>
-
-
-  </tbody>
-</table>
-</div>
 
 
 </div>

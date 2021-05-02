@@ -186,7 +186,7 @@ padding: 25px 0;
     border-collapse: separate;
     border-spacing: 0px 20px;
 }
-.grade-red {
+.grade-3 {
     background: #D0000D;
     width: 40px;
     height: 10px;
@@ -196,7 +196,7 @@ padding: 25px 0;
     overflow: hidden;
     margin-top: 10px;
 }
-.grade-black {
+.grade-4 {
     background: #000;
     width: 40px;
     height: 10px;
@@ -206,7 +206,7 @@ padding: 25px 0;
     overflow: hidden;
     margin-top: 10px;
 }
-.grade-yellow {
+.grade-2 {
     background: #F0A500;
     width: 40px;
     height: 10px;
@@ -216,8 +216,8 @@ padding: 25px 0;
     overflow: hidden;
     margin-top: 10px;
 }
-.grade-green {
-    background: #75CFB8;
+.grade-1 {
+    background: #7C9473;
     width: 40px;
     height: 10px;
     border-radius: 20px;
@@ -227,8 +227,19 @@ padding: 25px 0;
     margin-top: 10px;
 }
 
-.grade-gry {
-    background: #7C9473;
+.grade-0 {
+    background: #1BCA0C;
+    width: 40px;
+    height: 10px;
+    border-radius: 20px;
+    margin: 0 auto;
+        margin-top: 0px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.grade-10 {
+    background: #C4C4C4;
     width: 40px;
     height: 10px;
     border-radius: 20px;
@@ -281,22 +292,22 @@ padding: 25px 0;
     color: #000;
     font-weight: 600;
 }
-.grade6 span {
+.grade4 span {
     background: #000;
 }
-.grade5 span {
+.grade3 span {
     background: #D0000D;
 }
-.grade4 span {
+.grade2 span {
     background: #F0A500;
 }
-.grade3 span {
+.grade1 span {
     background: #7C9473;
 }
-.grade2 span {
-    background: #75CFC2;
+.grade0 span {
+    background: #1BCA0C;
 }
-.grade2 span {
+.grade10 span {
     background: #C4C4C4;
 }
 .grade1 {
