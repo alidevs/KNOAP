@@ -1,0 +1,253 @@
+@font-face {
+    font-family: 'Poppins', sans-serif;
+    src: url('../fonts/Gilroy-Bold.ttf');
+}
+ 
+
+body {
+  font-family: "Gilroy-Bold", sans-serif; 
+  margin: 0;  
+  background: #f7faf7;
+}
+
+ .login-box {
+    width: 500px; 
+    margin: 0 auto;
+    overflow: hidden;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    padding: 30px;
+}
+.login-logo {
+    float: left;
+    width: 100%;
+    text-align: center;
+    padding: 85px 0;
+}
+.login-bg {
+    background: url('../img/bg.png');
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+    background-repeat: no-repeat;
+    background-position: center 132px;
+    width: 100%;
+    height: 790px;
+    padding: 60px;
+}
+ 
+.login-box nav .nav-tabs .nav-link.active {
+    color: #000 !important;
+    background-color: #fff;
+    border-color: transparent;
+        border-bottom-color: transparent;
+    border-bottom: 2px solid #0F9E7F !important;
+    font-size: 30px !important;
+    font-weight: 600;
+    padding: 0 10px;
+line-height: 48px !important;
+}
+.login-box nav #nav-tab a {
+    text-transform: capitalize;
+    color: #BDC3C7;
+    font-size: 16px; 
+    font-weight: 700; 
+    line-height: 36px;
+}
+ 
+.tab-pane { 
+    padding: 40px 0 0;
+    float: left;
+    width: 100%; 
+}
+
+.login-feild {
+    float: left;
+    width: 100%;
+    margin: 0 0 30px;
+    background: #f7f7f7;
+    border: 0;
+        border-bottom-color: currentcolor;
+        border-bottom-style: none;
+        border-bottom-width: 0px;
+    padding: 10px 20px;
+    color: #bdc3c7;
+    border-bottom: 1px solid #bdc3c7;
+    border-radius: 6px 6px 0 0;
+    height: 45px;
+}
+.login-feild:focus-visible {
+    outline: none;
+}
+
+.login-btn {
+    width: 150px;
+    height: 34px;
+    overflow: hidden;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border: 1px solid #0F9E7F;
+    box-sizing: border-box;
+    border-radius: 8px;
+    display: block;
+    text-align: center;
+    line-height: 33px;
+    font-size: 14px;
+    color: #0F9E7F;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+.login-btn:hover {
+    color: #0f9e7f;
+}
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+    border-color: transparent;
+        border-bottom-color: transparent;
+    border-bottom: 2px solid #0F9E7F !important;
+}
+.patient-main-box {
+    width: 790px;
+    padding: 25px 45px;
+    margin: 60px auto;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.08);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.info-box h1 {
+    color: #2B303A;
+    font-size: 18px;
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0;
+    float: left;
+    width: 100%;
+}
+
+.info-box {
+    float: left;
+    width: 100%; 
+}
+.info-form {
+    border-top: 1px solid #BDC3C7;
+    float: left;
+    width: 100%;
+    padding: 20px 0;
+    margin: 20px 0;
+}
+.info-feild {
+    width: 100%;
+    float: left; 
+    border-bottom: 1px solid #BDC3C7;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    outline: none;
+    background: transparent;
+    padding: 2px 0;
+    color: #2B303A;
+}
+.info-feild-box label {
+    color: #2B303A;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    float: left;
+    width: 100%;
+}
+.info-feild-box {
+    float: left;
+    width: 200px;
+    margin-right: 50px;
+    margin-bottom: 50px;
+}
+.info-feild-box2 {
+    float: left;
+    width: 200px;
+    margin-right: 0px;
+    margin-bottom: 50px;
+}
+
+ .info-feild-box2 label {
+    color: #2B303A;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    float: left;
+    width: 100%;
+}
+.patient {
+    width: 239px;
+    height: 47px;
+     background: #0F9E7F;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0 auto;
+        margin-bottom: 0px;
+    overflow: hidden;
+    text-align: center;
+    display: block;
+    line-height: 50px;
+    margin-bottom: 40px;
+}
+@media only screen and (min-width: 300px) and (max-width:510px) {
+.login-box {
+    width: 100%; 
+}
+ 
+}
+@media only screen and (min-width: 300px) and (max-width:767px) {
+ 
+.login-bg { 
+    padding: 60px 20px;
+}
+ .patient-main-box {
+    width: 90%; 
+    padding: 25px 25px;
+}
+.info-feild-box {
+    float: left;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 50px;
+}
+
+.info-feild-box2 {
+    float: left;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 50px;
+}
+
+
+
+
+}
+
+
+@media only screen and (min-width: 768px) and (max-width:800px) {
+
+.patient-main-box {
+    width: 90%;
+    padding: 25px 45px; 
+}
+
+.info-feild-box {
+    float: left;
+    width: 30%;
+    margin-right: 30px;
+    margin-bottom: 50px;
+}
+.info-feild-box2 {
+    float: left;
+    width: 30%; 
+}
+
+}

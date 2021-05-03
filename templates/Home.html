@@ -1,0 +1,41 @@
+{% if message %}
+<script>
+    alert('{{ message }}');
+</script>
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<h1>Logged in as {{ email }}</h1>
+
+<button type="button" onclick="location.href='{% url 'logout' %}' ">Logout</button>
+<span>{{ session_id }}</span>
+
+<hr>
+<h2>Add Patient</h2>
+<form action="add_patient/" method="POST">
+    {% csrf_token %}
+    <input type="text" name="fname" placeholder="First name">
+    <input type="text" name="lname" placeholder="Last name"><br>
+    <input type="radio" name="gender" id="male" value="Male">
+    <label for="male">Male</label>
+    <input type="radio" name="gender" id="female" value="Female">
+    <label for="female">Female</label><br>
+    <input type="date" name="Birthday"><br>
+    <input type="text" name="City" placeholder="City"><br>
+    <input type="tel" name="Mobile" placeholder="Mobile Number"><br>
+    <input type="text" name="Street" placeholder="Street"><br>
+    <input type="number" name="zip" placeholder="ZIP Code"><br>
+    <input type="email" name="email" placeholder="Email"><br>
+
+
+    <hr>
+    <button type="submit" onclick="location.href='{% url 'add_patient' %} '">Add patient</button>
+</form>
+</body>
+</html>

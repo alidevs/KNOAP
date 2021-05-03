@@ -24,6 +24,13 @@ urlpatterns = [
     path('login/', views.login, name="login"),
     path('register/', views.register, name="register"),
     path('logout/', views.logout, name="logout"),
+    path('add_patient/', views.add_patient, name="add_patient"),
+    path('list_doctors/', views.list_all_doctors, name="list_doctors"),
+    # path('test_model/', views.test_model),
+    path('add_patient_file/', views.add_patient_file),
+    path('patient/<int:id>/', views.to_patient,name='to_patient'),
+    path('edit_patient/<int:id>/', views.edit_patient, name='to_patient')
+
     path('add/', views.addP, name="add_patient"),
     path('list_doctors/', views.list_all_doctors, name="list_doctors"),
     path('patient/<int:id>/', views.to_patient,name='to_patient'),

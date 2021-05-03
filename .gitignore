@@ -117,6 +117,7 @@ GitHub.sublime-settings
 
 .DS_Store
 .idea
+api/__pycache__/
 __pycache__
 env
 __pycache__/manage.cpython-38.pyc

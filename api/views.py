@@ -5,6 +5,14 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect
 import datetime
 from api.Database import Database
+
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.core.files.storage import default_storage
+from django.views.decorators.csrf import csrf_exempt
+
+from api.Database import Database
+from api.TF_MODEL.TestModel import tf_test_model
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
@@ -189,6 +197,32 @@ def list_all_doctors(request):
     print(request.session.has_key('user'))
     records = database.query('SELECT * FROM KNOAP.doctor;')
     return JsonResponse({'records': records})
+
+
+@csrf_exempt
+def add_patient_file(request):
+	patient_id = request.POST.get("patient_id")
+	patient_does_exist = database.does_patient_exist(patient_id)
+	if not patient_does_exist:
+		return JsonResponse({"error": f"No patient exist with id {patient_id}"})
+
+	current_dir = os.path.dirname(__file__)
+	file = request.FILES['image']
+
+	full_path = f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis\\{patient_id}.png"
+	file_name = default_storage.save(full_path, file)
+
+	result = tf_test_model(file_name)
+	inserted_diagnosis = database.insert_new_patient_diagnosis(patient_id, result['prediction'], result['confidence'], result['index'])
+
+	new_path = f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis\\{patient_id}_{inserted_diagnosis['id']}.png"
+	os.rename(full_path, new_path)
+
+	return JsonResponse({"name": file.name, "content-type": file.content_type, "size": file.size, "current_dir": current_dir, "results": result, "inserted_row": inserted_diagnosis})
+
+
+# def test_model(request):
+# 	return JsonResponse({"success": tf_test_model()}, content_type="application/json")
 
 
 def home(request):
