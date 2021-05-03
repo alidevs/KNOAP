@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% load static %}
+
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> 
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}" />
+    <title>KNOAP</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    <!-- CSS Files -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Fonts and Icons -->
+</head>
+<body>
+<div class="header">
+<div class="logo fadeInLeft animated">
+<a href="/">
+<img src="{% static 'img/logo.png' %}"/>
+<a/>
+</div>
+<div class="logout fadeInRight animated">
+<a href="logout/">Logout</a>
+ </div>
+</div>
+{% for patient in patient  %}
+
+<div class="wrapper">
+<div class="patient-breadcrum-row">
+<div class="breadcrum-box fadeInLeft animated">
+<a href="#">Patient List</a><img src="{% static 'img/arow.png'%}"/>
+<a href="#"> <span>{{ patient.fname }}</span>#{{ patient.id }}</a>
+</div>
+<div class="form-options fadeInRight animated">
+<a href="#" style="line-height: 28px;"><img src="{% static 'img/send.png'%}" style="margin-top: 0 !important;"/>Send email</a>
+<a href="/edit_patient/{{ patient.id }}/"><img src="{% static 'img/edit.png'%}"/>edit Patient</a>
+<a href="#"><img src="{% static 'img/close.png' %}"/>Delete Patient</a>
+ </div>
+ </div>
+
+<div class="petient-detail-content">
+<div class="row">
+<div class="col-md-8 fadeInLeft animated">
+<div class="card mt-4 p-3">
+<div class="information-box">
+<h4>Personal Information</h4>
+<div class="row-fluid">
+<div class="col-md-3 float-left mt-2">
+  <div class="form-group">
+    <label for="formGroupExampleInput">First name</label>
+    <input type="text" value="{{ patient.fname }}" class="form-control" id="formGroupExampleInput" placeholder="{{ patient.fname }}" readonly>
+  </div>
+</div>
+<div class="col-md-3 float-left mt-2">
+  <div class="form-group">
+    <label for="formGroupExampleInput">LAst name</label>
+    <input type="text"value="{{ patient.lname }}" class="form-control" id="formGroupExampleInput" placeholder="{{ patient.lname }}" readonly>
+  </div>
+</div>
+<div class="col-md-3 float-left mt-2">
+  <div class="form-group">
+    <label for="formGroupExampleInput">Gender</label>
+    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="{{ patient.gender }}" readonly>
+  </div>
+</div>
+<div class="col-md-3 float-left mt-2">
+  <div class="form-group">
+    <label for="formGroupExampleInput">Birthday</label>
+    <input type="text" value="{{ patient.birthday }}" class="form-control" id="formGroupExampleInput"  readonly>
+  </div>
+</div>
+</div>
+<div class="row-fluid">
+<div class="col-md-3 float-left mt-2">
+  <div class="form-group">
+    <label for="formGroupExampleInput">Phone number</label>
+    <input type="text" value="{{ patient.phone }}" class="form-control" id="formGroupExampleInput" placeholder="{{patient.phone}}" readonly>
+  </div>
+</div>
+<div class="col-md-3 float-left mt-2">
+  <div class="form-group">
+    <label for="formGroupExampleInput">Street</label>
+    <input type="text" value="{{ patient.phone }}" class="form-control" id="formGroupExampleInput" placeholder="65 Bay Street" readonly>
+  </div>
+</div>
+<div class="col-md-3 float-left mt-2">
+  <div class="form-group">
+    <label for="formGroupExampleInput">City</label>
+    <input type="text" value="{{ patient.Ahsa }}" class="form-control" id="formGroupExampleInput" placeholder="Jersey" readonly>
+  </div>
+</div>
+<div class="col-md-3 float-left mt-2">
+  <div class="form-group">
+    <label for="formGroupExampleInput">Zip Code</label>
+    <input type="text" value="{{ patient.zipcode }}" class="form-control" id="formGroupExampleInput" placeholder="31892" readonly>
+  </div>
+</div>
+</div>
+<div class="row-fluid">
+<div class="col-md-3 float-left mt-2">
+  <div class="form-group">
+    <label for="formGroupExampleInput">Email</label>
+    <input type="text" value="{{ patient.email }}" class="form-control" id="formGroupExampleInput" placeholder="maren.rosser@g.com" readonly>
+  </div>
+</div>
+<div class="col-md-3 float-left mt-2">
+  <div class="form-group">
+    <label for="formGroupExampleInput">Registerd Date</label>
+    <input type="text" value="{{ patient.registered }}" class="form-control" id="formGroupExampleInput" placeholder="16 Feb. 2021" readonly>
+  </div>
+</div>
+<div class="col-md-3 float-left mt-2">
+  <div class="form-group">
+    <label for="formGroupExampleInput">Last activity</label>
+    <input type="text" value="{{ patient.last_activity }}" class="form-control" id="formGroupExampleInput" placeholder="20 Feb. 2021" readonly>
+  </div>
+</div>
+<div class="col-md-3 float-left mt-3">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 fadeInRight animated">
+<div class="card mt-4 p-4">
+<div class="note-box">
+<h4>Notes</h4>
+<div class="note-comments">
+  <textarea class="form-control textarea"  id="exampleFormControlTextarea1" rows="3" readonly>
+  {{ patient.notes }}
+  </textarea>
+
+</div>
+<div class="dr-row">
+<img src="{% static 'img/dr.png'%}"/>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="previous-box">
+  <div class="row">
+   <div class="col-md-8 fadeInLeft animated">
+<div class="card mt-4 p-3">
+<div class="previous-heading">
+<h4>Previous diagnosis</h4>
+
+<div class="table-responsive">
+<table class="table mb-0">
+  <thead class="thead-light">
+    <tr>
+      <th>timestamp</th>
+      <th>grade</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="no-border-top"><img src="{% static 'img/cleander.png' %}"> 24.04.2020_02:31:49</td>
+      <td class="no-border-top">Grade 0</td>
+      <td class="no-border-top"><a href="#">Preview</a></td>
+    </tr>
+    <tr>
+      <td><img src="{% static 'img/cleander.png'%}"> 24.04.2020_02:31:49</td>
+      <td>Grade 2</td>
+      <td><a href="#">Preview</a></td>
+    </tr>
+    <tr>
+     <td><img src="{% static 'img/cleander.png'%}"> 24.04.2020_02:31:49</td>
+      <td>Grade 3</td>
+      <td><a href="#">Preview</a></td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 fadeInRight animated">
+<div class="card mt-4 p-3">
+<div class="files-box">
+<h4>FILES & DOCUMENTS</h4>
+<a href="#" class="add-file-btn" data-toggle="modal" data-target="#exampleModalScrollable">
+<img src="{% static 'img/file.png'%}"/>
+Add Files
+</a>
+</div>
+<div class="document-table">
+<div class="table-responsive">
+<table class="table mb-0">
+  <tbody>
+    <tr>
+      <td><img src="{% static 'img/x-ray.png'%}"/> x_ray_result.png </td>
+      <td>123kb</td>
+    </tr>
+
+
+  </tbody>
+</table>
+</div>
+
+
+</div>
+</div>
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fadeInDown animated" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenteredLabel">UPLOAD your files</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="#" id="#">
+              <div class="form-group files">
+                <input type="file" class="form-control" multiple="">
+              </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+{% endfor %}
+
+
+
+</body>
+<!--   Core JS Files   -->
+<script src="{% static 'js/jquery-2.2.4.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/bootstrap.min.js'%}" type="text/javascript"></script>
+ 
+</html>
