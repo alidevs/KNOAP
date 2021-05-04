@@ -21,7 +21,9 @@
 <body>
 <div class="header">
 <div class="logo fadeInLeft animated">
-<img src="{% static 'img/logo.png' %}"/>
+            <a href="/">
+            <img src="{% static 'img/logo.png' %}" width="119" height="26"/>
+            <a/>
 </div>
 <div class="logout fadeInRight animated">
 <a href="#">Logout</a>
@@ -36,9 +38,10 @@
 <a href="#"> <span>{{ patient.fname }}</span>#{{ patient.id }}</a>
 </div>
 <div class="form-options fadeInRight animated">
-<a href="#"><img src="{% static 'img/close.png' %}"/>Delete Patient</a>
+<a href="/delete_patient/{{ patient.id }}/"><img src="{% static 'img/close.png' %}"/>Delete Patient</a>
  </div>
  </div>
+<form action="/edit_patient/{{ patient.id }}/" method="post">
 
 <div class="petient-detail-content">
 <div class="row">
@@ -50,25 +53,25 @@
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">First name</label>
-    <input type="text" value="{{ patient.fname }}" class="form-control" id="formGroupExampleInput" >
+    <input type="text" name="fname" value="{{ patient.fname }}" class="form-control" id="formGroupExampleInput" >
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">LAst name</label>
-    <input type="text"value="{{ patient.lname }}" class="form-control" id="formGroupExampleInput" >
+    <input type="text"value="{{ patient.lname }}" class="form-control" id="formGroupExampleInput" name="lname">
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Gender</label>
-    <input type="text" value = "{{ patient.gender }}" class="form-control" id="formGroupExampleInput" >
+    <input type="text" value = "{{ patient.gender }}" class="form-control" id="formGroupExampleInput" name="gender">
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Birthday</label>
-    <input type="text" value="{{ patient.birthday }}" class="form-control" id="formGroupExampleInput" >
+    <input type="text" value="{{ patient.birthday }}" class="form-control" id="formGroupExampleInput" name="birthday">
   </div>
 </div>
 </div>
@@ -76,25 +79,25 @@
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Phone number</label>
-    <input type="text" value="{{ patient.phone }}" class="form-control" id="formGroupExampleInput" >
+    <input type="text" value="{{ patient.phone }}" class="form-control" id="formGroupExampleInput" name="phone">
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Street</label>
-    <input type="text" value="{{ patient.phone }}" class="form-control" id="formGroupExampleInput" >
+    <input type="text" value="{{ patient.street }}" class="form-control" id="formGroupExampleInput" name="street">
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">City</label>
-    <input type="text" value="{{ patient.city }}" class="form-control" id="formGroupExampleInput" >
+    <input type="text" value="{{ patient.city }}" class="form-control" id="formGroupExampleInput" name="city">
   </div>
 </div>
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Zip Code</label>
-    <input type="text" value="{{ patient.zipcode }}" class="form-control" id="formGroupExampleInput" >
+    <input type="text" value="{{ patient.zipcode }}" class="form-control" id="formGroupExampleInput" name="zipcode">
   </div>
 </div>
 </div>
@@ -102,21 +105,10 @@
 <div class="col-md-3 float-left mt-2">
   <div class="form-group">
     <label for="formGroupExampleInput">Email</label>
-    <input type="text" value="{{ patient.email }}" class="form-control" id="formGroupExampleInput" >
+    <input type="text" value="{{ patient.email }}" class="form-control" id="formGroupExampleInput" name="email">
   </div>
 </div>
-<div class="col-md-3 float-left mt-2">
-  <div class="form-group">
-    <label for="formGroupExampleInput">Registerd Date</label>
-    <input type="text" value="{{ patient.registered }}" class="form-control" id="formGroupExampleInput" >
-  </div>
-</div>
-<div class="col-md-3 float-left mt-2">
-  <div class="form-group">
-    <label for="formGroupExampleInput">Last activity</label>
-    <input type="text" value="{{ patient.last_activity }}" class="form-control" id="formGroupExampleInput" >
-  </div>
-</div>
+
 <div class="col-md-3 float-left mt-3">
 
 </div>
@@ -129,14 +121,16 @@
 <div class="note-box">
 <h4>Notes</h4>
 <div class="note-comments">
-  <textarea class="form-control textarea"  id="exampleFormControlTextarea1" rows="3">
+  <textarea class="form-control textarea"  id="exampleFormControlTextarea1" rows="3" name="notes">
   {{ patient.notes }}
   </textarea>
+     <input type="submit" class="save-btn" value="Save"><br><br>
 
-<a href="/patient/{{ patient.id }}/" class="save-btn">Save</a>
+<!--<a href="/patient/{{ patient.id }}/" class="save-btn">Save</a>-->
 </div>
 <div class="dr-row">
 <img src="{% static 'img/dr.png'%}"/>
+<!--    {{ doctor }}-->
 </div>
 </div>
 </div>

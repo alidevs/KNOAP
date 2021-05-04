@@ -34,9 +34,9 @@
             <a href="#"> <span>{{ patient.fname }}</span>#{{ patient.id }}</a>
          </div>
          <div class="form-options fadeInRight animated">
-            <a href="#" style="line-height: 28px;"><img src="{% static 'img/send.png'%}" style="margin-top: 0 !important;"/>Send email</a>
+            <a href="mailto:{{patient.email}}" style="line-height: 28px;"><img src="{% static 'img/send.png'%}" style="margin-top: 0 !important;"/>Send email</a>
             <a href="/edit_patient/{{ patient.id }}/"><img src="{% static 'img/edit.png'%}"/>edit Patient</a>
-            <a href="#"><img src="{% static 'img/close.png' %}"/>Delete Patient</a>
+            <a href="/delete_patient/{{ patient.id }}/"><img src="{% static 'img/close.png' %}"/>Delete Patient</a>
          </div>
       </div>
       <div class="petient-detail-content">
@@ -133,7 +133,9 @@
                      </div>
                      <div class="dr-row">
                         <img src="{% static 'img/dr.png'%}"/>
+                        {{ doctor }}
                      </div>
+
                   </div>
                </div>
             </div>

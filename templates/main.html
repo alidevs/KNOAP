@@ -70,7 +70,7 @@
     </tr>
   </thead>
   <tbody>
-  {%  for result in patient %}
+  {%  for result in patient|dictsortreversed:"last_activity" %}
     <tr>
 
       <td><a href="/patient/{{ result.id }}/">#{{result.id}}</a></td>

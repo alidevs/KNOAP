@@ -30,7 +30,7 @@ urlpatterns = [
     path('add_patient_file/', views.add_patient_file),
     path('patient/<int:id>/', views.to_patient,name='to_patient'),
     path('edit_patient/<int:id>/', views.edit_patient, name='to_patient'),
-
+    path('delete_patient/<int:id>/', views.delete_patient),
     path('list_doctors/', views.list_all_doctors, name="list_doctors"),
     path('patient/<int:id>/', views.to_patient,name='to_patient'),
     path('edit_patient/<int:id>/', views.edit_patient, name='to_patient'),
