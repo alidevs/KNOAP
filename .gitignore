@@ -118,3 +118,4 @@ GitHub.sublime-settings
 .DS_Store
 .idea
 api/__pycache__/
+api/TF_MODEL/patient_saved_diagnosis

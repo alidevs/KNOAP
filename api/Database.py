@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
@@ -18,7 +18,7 @@ class Database:
 			records = self.cursor.fetchall()
 			rowcount = self.cursor.rowcount
 			self.connection.commit()
-			print(f"Found {self.cursor.rowcount} rows")
+			# print(f"Found {rowcount} rows")
 			self.disconnect()
 			return {'records': records, 'count': rowcount}
 		except (Exception, psycopg2.DatabaseError) as error:
@@ -42,20 +42,35 @@ class Database:
 		if self.cursor is not None:
 			self.cursor.close()
 			self.cursor = None
-			print("Closing cursor")
+			# print("Closing cursor")
 
 		if self.connection is not None:
 			self.connection.close()
 			self.connection = None
-			print("Closing connection")
+			# print("Closing connection")
 
 	def does_patient_exist(self, patient_id):
 		number_of_rows_found = self.query(f"SELECT * FROM KNOAP.patient WHERE id = {patient_id};")['count']
-		print(f"NO OF RO {number_of_rows_found}")
+		# print(f"NO OF RO {number_of_rows_found}")
 		return number_of_rows_found == 1
 
 	def insert_new_patient_diagnosis(self, patient_id, prediction, confidence, index):
 		query = """INSERT INTO KNOAP.diagnosis (patient_id, prediction, confidence, index)
 				   VALUES ('%s', '%s', %d, %d) RETURNING *;""" % (patient_id, prediction, confidence, index)
 		result = self.query(query)
+		print(f"DIAGNOSIS ADDED {result['records']}")
 		return result['records'][0]
+
+	def get_patient_by_id(self, id):
+		records = self.query(f"SELECT * FROM KNOAP.patient WHERE id = {id};")
+		if (records['count'] == 0):
+			raise Http404
+
+		return records['records']
+
+	def get_patient_diagnosis(self, patient_id):
+		records = self.query(f"SELECT * FROM KNOAP.diagnosis WHERE patient_id = {patient_id};")['records']
+		dictionary = []
+		for key in records:
+			dictionary.append(dict(key))
+		return dictionary
