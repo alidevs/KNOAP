@@ -178,7 +178,7 @@ def add_patient_file(request):
 		return JsonResponse({"error": "No image uploaded OR GET request"})
 
 
-def home(request):
+def home(request, patients=None):
 	# GET /
 	if request.session.has_key("user"):
 		email = request.session['user']['email']
@@ -188,10 +188,10 @@ def home(request):
 		stri = json.dumps(records['records'], indent=4, sort_keys=True, default=str)
 		count = records['count']
 		patients_list = eval(stri)
-		print(f"Going home with {email}")
+		if patients is not None:
+			return render(request, 'main.html', {'patient': patients, 'count': count})
 		return render(request, 'main.html', {'patient': patients_list, 'count': count})
 	else:
-		print("You need to login")
 		return redirect("/login/")
 
 
@@ -232,7 +232,7 @@ def edit_patient(request, id):
 		print(id)
 		query = """SELECT * FROM KNOAP.patient where id ='%s';""" % (id)
 		records = database.query(query)
-		if (records['count'] == 0):
+		if records['count'] == 0:
 			raise Http404
 		stri = json.dumps(records['records'], indent=4, sort_keys=True, default=str)
 
@@ -240,8 +240,19 @@ def edit_patient(request, id):
 		print(type(patient))
 		return render(request, 'edit_patient.html', {'patient': patient, 'doctor': request.session['user']})
 	else:
-		print("You need to login")
 		return redirect("/login/")
+
+
+@csrf_exempt
+def search(request):
+	if request.method == "POST":
+		query = request.POST.get('query')
+		print(f"Searching {query} ..")
+
+		if query is not None:
+			records = database.search_for_patient(query)
+			return home(request, records)
+		return home(request)
 
 
 def humanbytes(B):

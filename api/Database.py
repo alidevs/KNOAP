@@ -71,6 +71,17 @@ class Database:
 	def get_patient_diagnosis(self, patient_id):
 		records = self.query(f"SELECT * FROM KNOAP.diagnosis WHERE patient_id = {patient_id};")['records']
 		dictionary = []
-		for key in records:
-			dictionary.append(dict(key))
+		for diagnosis in records:
+			dictionary.append(dict(diagnosis))
 		return dictionary
+
+	def search_for_patient(self, query):
+		query = f"SELECT * FROM KNOAP.patient WHERE (id, fname, lname, gender, phone, email, city)::text ILIKE ('%{query}%');"
+		records = self.query(query)['records']
+		dictionary = []
+		for patient in records:
+			dictionary.append(dict(patient))
+		return dictionary
+
+	def update_patient(self, new_patient):
+		pass
