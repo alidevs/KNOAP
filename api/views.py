@@ -32,47 +32,8 @@ def addP(request):
         return redirect("/login/")
 
 
-# def home(request):
-# 		# GET /
-# 		if request.session.has_key("user"):
-# 			email = request.session['user']['email']
-# 			print(f"Signed in as {email}")
-# 			return render(request, 'main.html')
-# 			#return render(request, 'main.html', {"email": email})
-# 		else:
-# 			print("You need to login")
-# 			return redirect("/login/")
-#
 
 @csrf_exempt
-def testLogin(request):
-    # GET /login
-    if request.method == "GET":
-        if request.session.has_key('email'):
-            return JsonResponse({"email": request.session['email']})
-        else:
-            return render(request, 'Login_register.html')
-
-    # POST /login
-    elif request.method == "POST":
-
-        input_email = request.POST.get('email')
-        input_password = request.POST.get('password')
-        print(f'Email {input_email}\t\tPassword {input_password}')
-
-        query = """	SELECT * FROM KNOAP.doctor
-					WHERE email = '%s'
-					AND password = '%s';
-		""" % (input_email, input_password)
-        records = database.query(query)
-
-        if type(records) is not JsonResponse:
-            if records['count'] > 0:
-                request.session['user'] = records['records'][0]
-                return redirect("/", {"email": input_email})
-            else:
-                return JsonResponse({'error': 'Email or password may be incorrect'})
-        return records
 
 def login(request):
     # GET /login
@@ -80,7 +41,7 @@ def login(request):
         if request.session.has_key('email'):
             return JsonResponse({"email": request.session['email']})
         else:
-            return render(request, 'Login.html')
+            return render(request, 'Login_register.html')
 
     # POST /login
     elif request.method == "POST":
@@ -110,20 +71,20 @@ def logout(request):
         try:
             # print(f"Logging out of {request.session['email']}")
             del request.session['user']
-            return JsonResponse({"message": "Logged out successfully"})
+            return redirect("/login/")
+
         except Exception as e:
             # print(f"Failed to logout\n{query_str(e)}")
             return JsonResponse({"error": e})
 
 
-# return redirect("/login/")
 
 
 @csrf_exempt
 def register(request):
     # GET /register
     if request.method == "GET":
-        return render(request, "Register.html")
+        return render(request, "login.html")
 
     # POST /register
     elif request.method == "POST":
@@ -137,12 +98,12 @@ def register(request):
 						returning *;""" % (input_fname, input_lname, input_email, input_password, 'n')
         records = database.query(query)
         if type(records) is not JsonResponse:
-            request.session['user'] = records[0]
-            return JsonResponse({'records': records}, content_type="application/json")
+            return redirect("/login/")
+
         return records
 
 
-# return render(request, "Login.html")
+
 
 
 # def reset(request):
@@ -274,4 +235,3 @@ def edit_patient(request, id):
     else:
         print("You need to login")
         return redirect("/login/")
-

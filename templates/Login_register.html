@@ -30,10 +30,10 @@
 </nav>
 <div class="tab-content" id="nav-tab">
   <div class="tab-pane show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-<form action="/testLogin/" method="post">
+<form action="/login/" method="post">
   
-      <input type="email" class="login-feild" placeholder="Enter your email address" required>
-      <input type="password" class="login-feild" placeholder="Enter your password" required>
+      <input type="email" name="email" class="login-feild" placeholder="Enter your email address" required>
+      <input type="password" name="password" class="login-feild" placeholder="Enter your password" required>
      <input type="submit" class="login-btn" value="Login"><br><br>
   
 </form>
@@ -41,11 +41,12 @@
 
   </div>
   <div class="tab-pane" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-        <form>
+        <form action="/register/" method="post">
   
-      <input type="text" class="login-feild" placeholder="Enter your email address"required>
-      <input type="text" class="login-feild" placeholder="Enter your password"required>
-      <input type="text" class="login-feild" placeholder="Confirm your password"required>
+      <input type="text" name="firstname" class="login-feild" placeholder="Enter your first name"required>
+      <input type="text" name="lastname" class="login-feild" placeholder="Enter your last name"required>
+      <input type="email" name="email" class="login-feild" placeholder="Enter your email"required>
+      <input type="password" name="password" class="login-feild" placeholder="Enter your password"required>
       <input type="submit" class="login-btn" value="Sign Up">
   
 </form>
