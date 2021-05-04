@@ -18,7 +18,6 @@ class Database:
 			records = self.cursor.fetchall()
 			rowcount = self.cursor.rowcount
 			self.connection.commit()
-			# print(f"Found {rowcount} rows")
 			self.disconnect()
 			return {'records': records, 'count': rowcount}
 		except (Exception, psycopg2.DatabaseError) as error:
@@ -55,10 +54,8 @@ class Database:
 		return number_of_rows_found == 1
 
 	def insert_new_patient_diagnosis(self, patient_id, prediction, confidence, index):
-		update_patient_grade_query = f"UPDATE KNOAP.patient SET grade={index} WHERE id={patient_id} RETURNING *;"
-		update_result = self.query(update_patient_grade_query)
-		# print(update_patient_grade_query)
-		# print(f"UPDATE: {update_result}")
+		update_patient_grade_query = f"UPDATE KNOAP.patient SET grade={index}, last_activity=DEFAULT WHERE id={patient_id} RETURNING *;"
+		self.query(update_patient_grade_query)
 
 		query = """INSERT INTO KNOAP.diagnosis (patient_id, prediction, confidence, index)
 				   VALUES ('%s', '%s', %d, %d) RETURNING *;""" % (patient_id, prediction, confidence, index)
