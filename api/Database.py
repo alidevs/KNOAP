@@ -18,11 +18,11 @@ class Database:
 			records = self.cursor.fetchall()
 			rowcount = self.cursor.rowcount
 			self.connection.commit()
-			# print(f"Found {rowcount} rows")
 			self.disconnect()
 			return {'records': records, 'count': rowcount}
 		except (Exception, psycopg2.DatabaseError) as error:
 			self.disconnect()
+			print(str(error))
 			return JsonResponse({'error': str(error)}, content_type="application/json")
 
 	def connect(self):
@@ -51,15 +51,21 @@ class Database:
 
 	def does_patient_exist(self, patient_id):
 		number_of_rows_found = self.query(f"SELECT * FROM KNOAP.patient WHERE id = {patient_id};")['count']
-		# print(f"NO OF RO {number_of_rows_found}")
 		return number_of_rows_found == 1
 
 	def insert_new_patient_diagnosis(self, patient_id, prediction, confidence, index):
+		update_patient_grade_query = f"UPDATE KNOAP.patient SET grade={index}, last_activity=DEFAULT WHERE id={patient_id} RETURNING *;"
+		self.query(update_patient_grade_query)
+
 		query = """INSERT INTO KNOAP.diagnosis (patient_id, prediction, confidence, index)
 				   VALUES ('%s', '%s', %d, %d) RETURNING *;""" % (patient_id, prediction, confidence, index)
 		result = self.query(query)
-		print(f"DIAGNOSIS ADDED {result['records']}")
-		return result['records'][0]
+		records = result['records']
+		dictionary = []
+		for patient in records:
+			dictionary.append(dict(patient))
+			print(f"Dictionary: {dictionary}")
+		return dictionary[0]
 
 	def get_patient_by_id(self, id):
 		records = self.query(f"SELECT * FROM KNOAP.patient WHERE id = {id};")
@@ -71,6 +77,14 @@ class Database:
 	def get_patient_diagnosis(self, patient_id):
 		records = self.query(f"SELECT * FROM KNOAP.diagnosis WHERE patient_id = {patient_id};")['records']
 		dictionary = []
-		for key in records:
-			dictionary.append(dict(key))
+		for diagnosis in records:
+			dictionary.append(dict(diagnosis))
+		return dictionary
+
+	def search_for_patient(self, query):
+		query = f"SELECT * FROM KNOAP.patient WHERE (id, fname, lname, gender, phone, email, city)::text ILIKE ('%{query}%');"
+		records = self.query(query)['records']
+		dictionary = []
+		for patient in records:
+			dictionary.append(dict(patient))
 		return dictionary

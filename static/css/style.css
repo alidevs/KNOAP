@@ -109,12 +109,17 @@ padding: 25px 0;
     float: left;
     margin-right: 10px;
 }
+
+.add {
+    width: 100%;
+    display: flex;
+}
 .add a {
 	color: #86ABA1;
 	font-size: 18px;
 	font-weight: 700;
 	float: right;
-	width: 50px;
+	width: 100%;
 	margin: 0;
 	text-align: right;
   
@@ -228,7 +233,7 @@ padding: 25px 0;
 }
 
 .grade-0 {
-    background: #1BCA0C;
+    background: #75CFB8;
     width: 40px;
     height: 10px;
     border-radius: 20px;
@@ -305,7 +310,7 @@ padding: 25px 0;
     background: #7C9473;
 }
 .grade0 span {
-    background: #1BCA0C;
+    background: #75CFB8;
 }
 .grade10 span {
     background: #C4C4C4;
