@@ -20,74 +20,70 @@ from django.views.decorators.csrf import csrf_exempt
 database = Database()
 
 
-
 @csrf_exempt
 def login(request):
-	def login(request):
-		# GET /login
-		if request.method == "GET":
-			if request.session.has_key('email'):
-				return JsonResponse({"email": request.session['email']})
+	# GET /login
+	if request.method == "GET":
+		if request.session.has_key('email'):
+			return JsonResponse({"email": request.session['email']})
+		else:
+			return render(request, 'Login_register.html')
+
+	# POST /login
+	elif request.method == "POST":
+		input_email = request.POST.get('email')
+		input_password = request.POST.get('password')
+		print(f'Email {input_email}\t\tPassword {input_password}')
+
+		query = """	SELECT * FROM KNOAP.doctor
+					WHERE email = '%s'
+					AND password = '%s';
+		""" % (input_email, input_password)
+		records = database.query(query)
+
+		if type(records) is not JsonResponse:
+			if records['count'] > 0:
+				request.session['user'] = records['records'][0]
+				return redirect("/", {"email": input_email})
 			else:
-				return render(request, 'Login_register.html')
-
-		# POST /login
-		elif request.method == "POST":
-
-			input_email = request.POST.get('email')
-			input_password = request.POST.get('password')
-			print(f'Email {input_email}\t\tPassword {input_password}')
-
-			query = """	SELECT * FROM KNOAP.doctor
-						WHERE email = '%s'
-						AND password = '%s';
-			""" % (input_email, input_password)
-			records = database.query(query)
-
-			if type(records) is not JsonResponse:
-				if records['count'] > 0:
-					request.session['user'] = records['records'][0]
-					return redirect("/", {"email": input_email})
-				else:
-					return JsonResponse({'error': 'Email or password may be incorrect'})
-			return records
+				return JsonResponse({'error': 'Email or password may be incorrect'})
+		return records
 
 
 def logout(request):
-    # GET /logout
-    if request.method == "GET":
-        try:
-            # print(f"Logging out of {request.session['email']}")
-            del request.session['user']
-            return redirect("/login/")
+	# GET /logout
+	if request.method == "GET":
+		try:
+			# print(f"Logging out of {request.session['email']}")
+			del request.session['user']
+			return redirect("/login/")
 
-        except Exception as e:
-            # print(f"Failed to logout\n{query_str(e)}")
-            return JsonResponse({"error": e})
+		except Exception as e:
+			# print(f"Failed to logout\n{query_str(e)}")
+			return JsonResponse({"error": e})
+
 
 @csrf_exempt
 def register(request):
-    # GET /register
-    if request.method == "GET":
-        return render(request, "login.html")
+	# GET /register
+	if request.method == "GET":
+		return render(request, "login.html")
 
-    # POST /register
-    elif request.method == "POST":
-        input_fname = request.POST.get('firstname')
-        input_lname = request.POST.get('lastname')
-        input_email = request.POST.get('email')
-        input_password = request.POST.get('password')
+	# POST /register
+	elif request.method == "POST":
+		input_fname = request.POST.get('firstname')
+		input_lname = request.POST.get('lastname')
+		input_email = request.POST.get('email')
+		input_password = request.POST.get('password')
 
-        query = """INSERT INTO KNOAP.doctor (fname, lname, email, password,authorized)
+		query = """INSERT INTO KNOAP.doctor (fname, lname, email, password,authorized)
 						VALUES ('%s', '%s', '%s', '%s', '%s')
 						returning *;""" % (input_fname, input_lname, input_email, input_password, 'n')
-        records = database.query(query)
-        if type(records) is not JsonResponse:
-            return redirect("/login/")
+		records = database.query(query)
+		if type(records) is not JsonResponse:
+			return redirect("/login/")
 
-        return records
-
-
+		return records
 
 
 # def reset(request):
@@ -109,33 +105,30 @@ def register(request):
 
 @csrf_exempt
 def add_patient(request):
-    if request.method == "POST":
-        first_name = request.POST.get('fname')
-        last_name = request.POST.get('lname')
-        gender = request.POST.get('gender')
-        birthday = request.POST.get('birthday')
-        city = request.POST.get('city')
-        phone = request.POST.get('phone')
-        street = request.POST.get('street')
-        zip_code = request.POST.get('zipCode')
-        patient_email = request.POST.get('email')
-        date = datetime.date.today()
-        doctor = request.session['user']['id']
-        notes = ""
-        grade = 5
+	if request.method == "POST":
+		first_name = request.POST.get('fname')
+		last_name = request.POST.get('lname')
+		gender = request.POST.get('gender')
+		birthday = request.POST.get('birthday')
+		city = request.POST.get('city')
+		phone = request.POST.get('phone')
+		street = request.POST.get('street')
+		zip_code = request.POST.get('zipCode')
+		patient_email = request.POST.get('email')
+		date = datetime.date.today()
+		doctor = request.session['user']['id']
+		notes = ""
+		grade = 5
 
-        query = """INSERT INTO KNOAP.patient (fname, lname, gender, birthday, phone, street, city, zipcode, email, registered, notes, assigned_doctor, last_activity,grade)
+		query = """INSERT INTO KNOAP.patient (fname, lname, gender, birthday, phone, street, city, zipcode, email, registered, notes, assigned_doctor, last_activity,grade)
 								VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s','%s')
-								RETURNING *;""" % (first_name, last_name, gender, birthday, phone, street, city, zip_code, patient_email, date, notes, doctor,date,grade)
-        records = database.query(query)
-        if type(records) is not JsonResponse:
-           return redirect("/")
-
-    # return JsonResponse(data)
-    # return render(request, "Home.html")
-    # return render(request, "Home.html", {"message": "Could not add patient"})
-    return render(request, 'add_patient.html')
-
+								RETURNING *;""" % (
+			first_name, last_name, gender, birthday, phone, street, city, zip_code, patient_email, date, notes, doctor,
+			date, grade)
+		records = database.query(query)
+		if type(records) is not JsonResponse:
+			return redirect("/")
+	return render(request, 'add_patient.html')
 
 
 def list_all_doctors(request):
@@ -154,21 +147,18 @@ def add_patient_file(request):
 			return JsonResponse({"error": f"No patient exist with id {patient_id}"})
 
 		current_dir = os.path.dirname(__file__)
-		# file = request.POST.get('image', False)
 		file = request.FILES['image']
 
-		full_path = f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis\\{patient_id}.png"
+		full_path = os.path.join(current_dir, "TF_MODEL", "patient_saved_diagnosis", f"{patient_id}.png")
 		file_name = default_storage.save(full_path, file)
 
 		result = tf_test_model(file_name)
 		inserted_diagnosis = database.insert_new_patient_diagnosis(patient_id, result['prediction'],
 																   result['confidence'], result['index'])
 
-		new_path = f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis\\{patient_id}_{inserted_diagnosis['id']}.png"
+		new_path = os.path.join(current_dir, "TF_MODEL", "patient_saved_diagnosis",
+								f"{patient_id}_{inserted_diagnosis['id']}.png")
 		os.rename(full_path, new_path)
-
-		# images_dictionary = {k: v for v, k in enumerate(list_of_images)}
-		# images_dictionary = dict(zip(range(len(list_of_images)), list_of_images))
 
 		patient = database.get_patient_by_id(patient_id)
 
@@ -184,8 +174,6 @@ def add_patient_file(request):
 		}
 
 		return to_patient(request, patient_id, data_to_send)
-		# return render(request, "Patient-detail.html", data_to_send)
-	# return JsonResponse({"name": file.name, "content-type": file.content_type, "size": file.size, "current_dir": current_dir, "results": result, "inserted_row": inserted_diagnosis})
 	else:
 		return JsonResponse({"error": "No image uploaded OR GET request"})
 
@@ -219,24 +207,21 @@ def to_patient(request, id, data=None):
 		patient = eval(stri)
 
 		current_dir = os.path.dirname(__file__)
-		list_of_images = fnmatch.filter(os.listdir(f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis"),
+		list_of_images = fnmatch.filter(os.listdir(os.path.join(current_dir, "TF_MODEL", "patient_saved_diagnosis")),
 										f'{id}_*.png')
 		images_dictionary = dict()
 		for item in list_of_images:
 			images_dictionary[item] = humanbytes(
-				os.path.getsize(f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis\\{item}"))
+				os.path.getsize(os.path.join(current_dir, "TF_MODEL", "patient_saved_diagnosis", item)))
 
 		patient_diagnosis = database.get_patient_diagnosis(id)
-
-		print(type(patient_diagnosis))
-		print(patient_diagnosis)
-		print(type(images_dictionary))
-		print(images_dictionary)
 
 		if data is not None:
 			print(f"Data -> {data}")
 			return render(request, 'Patient-detail.html', data)
-		return render(request, 'Patient-detail.html', {'patient': patient, 'doctor': request.session['user'], "files": images_dictionary, "diagnosis": patient_diagnosis})
+		return render(request, 'Patient-detail.html',
+					  {'patient': patient, 'doctor': request.session['user'], "files": images_dictionary,
+					   "diagnosis": patient_diagnosis})
 	else:
 		print("You need to login")
 		return redirect("/login/")
