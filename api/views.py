@@ -159,39 +159,27 @@ def add_patient_file(request):
                                 f"{patient_id}_{inserted_diagnosis['id']}.png")
         os.rename(full_path, new_path)
 
-		# patient = database.get_patient_by_id(patient_id)
 
-		# data_to_send = {
-		# 	"name": f"{patient_id}_{inserted_diagnosis['id']}.png",
-		# 	"content-type": file.content_type,
-		# 	"size": file.size,
-		# 	"current_dir": current_dir,
-		# 	"results": result,
-		# 	"inserted_row": inserted_diagnosis,
-		# 	"doctor": request.session['user'],
-		# 	"patient": patient
-		# }
-
-		return redirect(f'/patient/{patient_id}/')
-	else:
-		return JsonResponse({"error": "No image uploaded OR GET request"})
+        return redirect(f'/patient/{patient_id}/')
+    else:
+        return JsonResponse({"error": "No image uploaded OR GET request"})
 
 
 def home(request, patients=None):
-	# GET /
-	if request.session.has_key("user"):
-		email = request.session['user']['email']
-		id = request.session['user']['id']
-		query = """SELECT * FROM KNOAP.patient where assigned_doctor ='%s';""" % (id)
-		records = database.query(query)
-		stri = json.dumps(records['records'], indent=4, sort_keys=True, default=str)
-		count = records['count']
-		patients_list = eval(stri)
-		if patients is not None:
-			return render(request, 'main.html', {'patient': patients, 'count': count})
-		return render(request, 'main.html', {'patient': patients_list, 'count': count})
-	else:
-		return redirect("/login/")
+    # GET /
+    if request.session.has_key("user"):
+        email = request.session['user']['email']
+        id = request.session['user']['id']
+        query = """SELECT * FROM KNOAP.patient where assigned_doctor ='%s';""" % (id)
+        records = database.query(query)
+        stri = json.dumps(records['records'], indent=4, sort_keys=True, default=str)
+        count = records['count']
+        patients_list = eval(stri)
+        if patients is not None:
+            return render(request, 'main.html', {'patient': patients, 'count': count})
+        return render(request, 'main.html', {'patient': patients_list, 'count': count})
+    else:
+        return redirect("/login/")
 
 
 def to_patient(request, id, data=None):
@@ -213,17 +201,17 @@ def to_patient(request, id, data=None):
             images_dictionary[item] = humanbytes(
                 os.path.getsize(os.path.join(current_dir, "TF_MODEL", "patient_saved_diagnosis", item)))
 
-		patient_diagnosis = database.get_patient_diagnosis(id)
+        patient_diagnosis = database.get_patient_diagnosis(id)
 
-		if data is not None:
-			print(f"Data -> {data}")
-			return render(request, 'Patient-detail.html', data)
-		default_data = {'patient': patient, 'doctor': request.session['user'], "files": images_dictionary,
-					   "diagnosis": patient_diagnosis}
-		print(f"Default data -> {default_data}")
-		return render(request, 'Patient-detail.html', default_data)
-	else:
-		return redirect("/login/")
+        if data is not None:
+            print(f"Data -> {data}")
+            return render(request, 'Patient-detail.html', data)
+        default_data = {'patient': patient, 'doctor': request.session['user'], "files": images_dictionary,
+                       "diagnosis": patient_diagnosis}
+        print(f"Default data -> {default_data}")
+        return render(request, 'Patient-detail.html', default_data)
+    else:
+        return redirect("/login/")
 
 
 @csrf_exempt
@@ -262,24 +250,24 @@ def edit_patient(request, id):
                 raise Http404
             stri = json.dumps(records['records'], indent=4, sort_keys=True, default=str)
 
-		patient = eval(stri)
-		print(type(patient))
-		return render(request, 'edit_patient.html', {'patient': patient, 'doctor': request.session['user']})
-	else:
-		print("You need to login")
-		return redirect("/login/")
+        patient = eval(stri)
+        print(type(patient))
+        return render(request, 'edit_patient.html', {'patient': patient, 'doctor': request.session['user']})
+    else:
+        print("You need to login")
+        return redirect("/login/")
 
 
 @csrf_exempt
 def search(request):
-	if request.method == "POST":
-		query = request.POST.get('query')
-		print(f"Searching {query} ..")
+    if request.method == "POST":
+        query = request.POST.get('query')
+        print(f"Searching {query} ..")
 
-		if query is not None:
-			records = database.search_for_patient(query)
-			return home(request, records)
-		return home(request)
+        if query is not None:
+            records = database.search_for_patient(query)
+            return home(request, records)
+        return home(request)
 
 
 def humanbytes(B):
