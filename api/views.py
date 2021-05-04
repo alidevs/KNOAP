@@ -14,7 +14,7 @@ from api.Database import Database
 from api.TF_MODEL.TestModel import tf_test_model
 import psycopg2
 from psycopg2.extras import RealDictCursor
-
+from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 
 database = Database()
@@ -160,20 +160,20 @@ def add_patient_file(request):
 								f"{patient_id}_{inserted_diagnosis['id']}.png")
 		os.rename(full_path, new_path)
 
-		patient = database.get_patient_by_id(patient_id)
+		# patient = database.get_patient_by_id(patient_id)
 
-		data_to_send = {
-			"name": f"{patient_id}_{inserted_diagnosis['id']}.png",
-			"content-type": file.content_type,
-			"size": file.size,
-			"current_dir": current_dir,
-			"results": result,
-			"inserted_row": inserted_diagnosis,
-			"doctor": request.session['user'],
-			"patient": patient
-		}
+		# data_to_send = {
+		# 	"name": f"{patient_id}_{inserted_diagnosis['id']}.png",
+		# 	"content-type": file.content_type,
+		# 	"size": file.size,
+		# 	"current_dir": current_dir,
+		# 	"results": result,
+		# 	"inserted_row": inserted_diagnosis,
+		# 	"doctor": request.session['user'],
+		# 	"patient": patient
+		# }
 
-		return to_patient(request, patient_id, data_to_send)
+		return redirect(f'/patient/{patient_id}/')
 	else:
 		return JsonResponse({"error": "No image uploaded OR GET request"})
 
@@ -219,11 +219,11 @@ def to_patient(request, id, data=None):
 		if data is not None:
 			print(f"Data -> {data}")
 			return render(request, 'Patient-detail.html', data)
-		return render(request, 'Patient-detail.html',
-					  {'patient': patient, 'doctor': request.session['user'], "files": images_dictionary,
-					   "diagnosis": patient_diagnosis})
+		default_data = {'patient': patient, 'doctor': request.session['user'], "files": images_dictionary,
+					   "diagnosis": patient_diagnosis}
+		print(f"Default data -> {default_data}")
+		return render(request, 'Patient-detail.html', default_data)
 	else:
-		print("You need to login")
 		return redirect("/login/")
 
 

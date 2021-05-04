@@ -23,6 +23,7 @@ class Database:
 			return {'records': records, 'count': rowcount}
 		except (Exception, psycopg2.DatabaseError) as error:
 			self.disconnect()
+			print(str(error))
 			return JsonResponse({'error': str(error)}, content_type="application/json")
 
 	def connect(self):
@@ -51,15 +52,23 @@ class Database:
 
 	def does_patient_exist(self, patient_id):
 		number_of_rows_found = self.query(f"SELECT * FROM KNOAP.patient WHERE id = {patient_id};")['count']
-		# print(f"NO OF RO {number_of_rows_found}")
 		return number_of_rows_found == 1
 
 	def insert_new_patient_diagnosis(self, patient_id, prediction, confidence, index):
+		update_patient_grade_query = f"UPDATE KNOAP.patient SET grade={index} WHERE id={patient_id} RETURNING *;"
+		update_result = self.query(update_patient_grade_query)
+		# print(update_patient_grade_query)
+		# print(f"UPDATE: {update_result}")
+
 		query = """INSERT INTO KNOAP.diagnosis (patient_id, prediction, confidence, index)
 				   VALUES ('%s', '%s', %d, %d) RETURNING *;""" % (patient_id, prediction, confidence, index)
 		result = self.query(query)
-		print(f"DIAGNOSIS ADDED {result['records']}")
-		return result['records'][0]
+		records = result['records']
+		dictionary = []
+		for patient in records:
+			dictionary.append(dict(patient))
+			print(f"Dictionary: {dictionary}")
+		return dictionary[0]
 
 	def get_patient_by_id(self, id):
 		records = self.query(f"SELECT * FROM KNOAP.patient WHERE id = {id};")
@@ -82,6 +91,3 @@ class Database:
 		for patient in records:
 			dictionary.append(dict(patient))
 		return dictionary
-
-	def update_patient(self, new_patient):
-		pass
