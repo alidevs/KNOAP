@@ -154,36 +154,55 @@ def add_patient(request):
 
 
 def list_all_doctors(request):
-    print(os.environ.get("HOST"))
-    print(request.session.has_key('user'))
-    records = database.query('SELECT * FROM KNOAP.doctor;')
-    return JsonResponse({'records': records})
+	print(os.environ.get("HOST"))
+	print(request.session.has_key('user'))
+	records = database.query('SELECT * FROM KNOAP.doctor;')
+	return JsonResponse({'records': records})
 
 
 @csrf_exempt
 def add_patient_file(request):
-	patient_id = request.POST.get("patient_id")
-	patient_does_exist = database.does_patient_exist(patient_id)
-	if not patient_does_exist:
-		return JsonResponse({"error": f"No patient exist with id {patient_id}"})
+	if request.method == "POST":
+		patient_id = request.POST.get("patient_id")
+		patient_does_exist = database.does_patient_exist(patient_id)
+		if not patient_does_exist:
+			return JsonResponse({"error": f"No patient exist with id {patient_id}"})
 
-	current_dir = os.path.dirname(__file__)
-	file = request.FILES['image']
+		current_dir = os.path.dirname(__file__)
+		# file = request.POST.get('image', False)
+		file = request.FILES['image']
 
-	full_path = f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis\\{patient_id}.png"
-	file_name = default_storage.save(full_path, file)
+		full_path = f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis\\{patient_id}.png"
+		file_name = default_storage.save(full_path, file)
 
-	result = tf_test_model(file_name)
-	inserted_diagnosis = database.insert_new_patient_diagnosis(patient_id, result['prediction'], result['confidence'], result['index'])
+		result = tf_test_model(file_name)
+		inserted_diagnosis = database.insert_new_patient_diagnosis(patient_id, result['prediction'],
+																   result['confidence'], result['index'])
 
-	new_path = f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis\\{patient_id}_{inserted_diagnosis['id']}.png"
-	os.rename(full_path, new_path)
+		new_path = f"{current_dir}\\TF_MODEL\\patient_saved_diagnosis\\{patient_id}_{inserted_diagnosis['id']}.png"
+		os.rename(full_path, new_path)
 
-	return JsonResponse({"name": file.name, "content-type": file.content_type, "size": file.size, "current_dir": current_dir, "results": result, "inserted_row": inserted_diagnosis})
+		# images_dictionary = {k: v for v, k in enumerate(list_of_images)}
+		# images_dictionary = dict(zip(range(len(list_of_images)), list_of_images))
 
+		patient = database.get_patient_by_id(patient_id)
 
-# def test_model(request):
-# 	return JsonResponse({"success": tf_test_model()}, content_type="application/json")
+		data_to_send = {
+			"name": f"{patient_id}_{inserted_diagnosis['id']}.png",
+			"content-type": file.content_type,
+			"size": file.size,
+			"current_dir": current_dir,
+			"results": result,
+			"inserted_row": inserted_diagnosis,
+			"doctor": request.session['user'],
+			"patient": patient
+		}
+
+		return to_patient(request, patient_id, data_to_send)
+		# return render(request, "Patient-detail.html", data_to_send)
+	# return JsonResponse({"name": file.name, "content-type": file.content_type, "size": file.size, "current_dir": current_dir, "results": result, "inserted_row": inserted_diagnosis})
+	else:
+		return JsonResponse({"error": "No image uploaded OR GET request"})
 
 
 def home(request):
@@ -235,3 +254,22 @@ def edit_patient(request, id):
     else:
         print("You need to login")
         return redirect("/login/")
+
+
+def humanbytes(B):
+	B = float(B)
+	KB = float(1024)
+	MB = float(KB ** 2)
+	GB = float(KB ** 3)
+	TB = float(KB ** 4)
+
+	if B < KB:
+		return '{0} {1}'.format(B, 'Bytes' if 0 == B > 1 else 'Byte')
+	elif KB <= B < MB:
+		return '{0:.2f} KB'.format(B / KB)
+	elif MB <= B < GB:
+		return '{0:.2f} MB'.format(B / MB)
+	elif GB <= B < TB:
+		return '{0:.2f} GB'.format(B / GB)
+	elif TB <= B:
+		return '{0:.2f} TB'.format(B / TB)
