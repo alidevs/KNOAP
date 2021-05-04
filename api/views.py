@@ -119,11 +119,9 @@ def add_patient(request):
         notes = ""
         grade = 5
 
-        query = """INSERT INTO KNOAP.patient (fname, lname, gender, birthday, phone, street, city, zipcode, email, notes, assigned_doctor,grade)
-                                VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s')
-                                RETURNING *;""" % (
-            first_name, last_name, gender, birthday, phone, street, city, zip_code, patient_email,  notes, doctor,
-            date, grade)
+        query = f"""INSERT INTO KNOAP.patient (fname, lname, gender, birthday, phone, street, city, zipcode, email, notes, assigned_doctor)
+                                VALUES ('{first_name}', '{last_name}', '{gender}', '{birthday}', '{phone}', '{street}', '{city}', '{zip_code}', '{patient_email}', '{notes}', '{doctor}')
+                                RETURNING *;"""
         records = database.query(query)
         if type(records) is not JsonResponse:
             return redirect("/")
