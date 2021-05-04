@@ -3,7 +3,9 @@ import os
 import fnmatch
 from dotenv import load_dotenv
 from django.http import JsonResponse, Http404
+from django.shortcuts import render, redirect
 import datetime
+from api.Database import Database
 
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -44,6 +46,35 @@ def addP(request):
 #
 
 @csrf_exempt
+def testLogin(request):
+    # GET /login
+    if request.method == "GET":
+        if request.session.has_key('email'):
+            return JsonResponse({"email": request.session['email']})
+        else:
+            return render(request, 'Login_register.html')
+
+    # POST /login
+    elif request.method == "POST":
+
+        input_email = request.POST.get('email')
+        input_password = request.POST.get('password')
+        print(f'Email {input_email}\t\tPassword {input_password}')
+
+        query = """	SELECT * FROM KNOAP.doctor
+					WHERE email = '%s'
+					AND password = '%s';
+		""" % (input_email, input_password)
+        records = database.query(query)
+
+        if type(records) is not JsonResponse:
+            if records['count'] > 0:
+                request.session['user'] = records['records'][0]
+                return redirect("/", {"email": input_email})
+            else:
+                return JsonResponse({'error': 'Email or password may be incorrect'})
+        return records
+
 def login(request):
 	# GET /login
 	if request.method == "GET":
@@ -133,6 +164,7 @@ def register(request):
 
 @csrf_exempt
 def add_patient(request):
+<<<<<<< HEAD
 	if request.method == "POST":
 		first_name = request.POST.get('fname')
 		last_name = request.POST.get('lname')
@@ -175,6 +207,34 @@ def add_patient(request):
 	# return render(request, "Home.html")
 	# return render(request, "Home.html", {"message": "Could not add patient"})
 	return JsonResponse({"message": "Could not add patient"})
+=======
+    if request.method == "POST":
+        first_name = request.POST.get('fname')
+        last_name = request.POST.get('lname')
+        gender = request.POST.get('gender')
+        birthday = request.POST.get('birthday')
+        city = request.POST.get('city')
+        phone = request.POST.get('phone')
+        street = request.POST.get('street')
+        zip_code = request.POST.get('zipCode')
+        patient_email = request.POST.get('email')
+        date = datetime.date.today()
+        doctor = request.session['user']['id']
+        notes = ""
+        grade = 5
+
+        query = """INSERT INTO KNOAP.patient (fname, lname, gender, birthday, phone, street, city, zipcode, email, registered, notes, assigned_doctor, last_activity,grade)
+								VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s','%s')
+								RETURNING *;""" % (first_name, last_name, gender, birthday, phone, street, city, zip_code, patient_email, date, notes, doctor,date,grade)
+        records = database.query(query)
+        if type(records) is not JsonResponse:
+           return redirect("/")
+
+    # return JsonResponse(data)
+    # return render(request, "Home.html")
+    # return render(request, "Home.html", {"message": "Could not add patient"})
+    return render(request, 'add_patient.html')
+>>>>>>> 4d20f221ecd5a78f3bc079644513837a21183408
 
 
 def list_all_doctors(request):
@@ -230,6 +290,7 @@ def add_patient_file(request):
 
 
 def home(request):
+<<<<<<< HEAD
 	# GET /
 	if request.session.has_key("user"):
 		email = request.session['user']['email']
@@ -254,6 +315,40 @@ def to_patient(request, id, data=None):
 		if (records['count'] == 0):
 			raise Http404
 		stri = json.dumps(records['records'], indent=4, sort_keys=True, default=str)
+=======
+    # GET /
+    if request.session.has_key("user"):
+        email = request.session['user']['email']
+        id = request.session['user']['id']
+        query = """SELECT * FROM KNOAP.patient where assigned_doctor ='%s';""" % (id)
+        records = database.query(query)
+        print(records['records'])
+        stri = json.dumps(records['records'], indent=1, sort_keys=True, default=str)
+        count = records['count']
+        print(stri)
+        patients_list = eval(stri)
+        return render(request, 'main.html', {'patient': patients_list, 'count': count})
+    else:
+        print("You need to login")
+        return redirect("/login/")
+
+
+def to_patient(request, id):
+    if request.session.has_key("user"):
+        print(id)
+        query = """SELECT * FROM KNOAP.patient where id ='%s';""" % (id)
+        records = database.query(query)
+        if (records['count'] == 0):
+            raise Http404
+        stri = json.dumps(records['records'], indent=4, sort_keys=True, default=str)
+
+        patient = eval(stri)
+        print(type(patient))
+        return render(request, 'Patient-detail.html', {'patient': patient, 'doctor': request.session['user']})
+    else:
+        print("You need to login")
+        return redirect("/login/")
+>>>>>>> 4d20f221ecd5a78f3bc079644513837a21183408
 
 		patient = eval(stri)
 

@@ -118,4 +118,19 @@ GitHub.sublime-settings
 .DS_Store
 .idea
 api/__pycache__/
+<<<<<<< HEAD
 api/TF_MODEL/patient_saved_diagnosis
+=======
+__pycache__
+env
+__pycache__/manage.cpython-38.pyc
+*.pyc
+*.pyc
+*.pyc
+*.pyc
+.idea/dataSources.local.xml
+.idea/KNOAP.iml
+.idea/misc.xml
+.idea/workspace.xml
+.vscode/settings.json
+>>>>>>> 4d20f221ecd5a78f3bc079644513837a21183408

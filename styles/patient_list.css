@@ -1,0 +1,95 @@
+.header {
+	display: flex;
+	height: 5vh;
+	background-color: white;
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+	border-bottom-right-radius: 15px;
+	border-bottom-left-radius: 15px;
+}
+
+.header h2 {
+	margin: auto 0.5vw;
+	color: var(--knoap-green);
+	font-weight: 900;
+}
+
+.controls {
+	display: flex;
+	justify-content: space-between;
+	padding: 0;
+	margin-top: 1.25vh;
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	width: 50%;
+	text-transform: uppercase;
+	font-weight: 700;
+	font-size: calc(0.4rem + 0.4vw);
+}
+
+.actions a {
+	display: flex;
+	align-items: center;
+}
+
+.actions a > * {
+	margin-right: 0.15vw;
+}
+
+.actions a:first-child {
+	margin-right: 1vw;
+	color: var(--cascade);
+}
+
+.actions a:last-child {
+	color: var(--red);
+}
+
+.table {
+	font-size: calc(0.75rem + 0.4vw);
+	font-weight: 300;
+	padding: 0;
+	margin-top: 1.05vh;
+	border-collapse: separate;
+	border-spacing: 0 1vh;
+}
+
+.table-head {
+	font-size: calc(0.33rem + 0.4vw);
+	border-radius: 10px;
+	text-transform: uppercase;
+	background-color: var(--willow-brook);
+}
+
+.table img {
+	width: 1.0vw;
+}
+
+input[type=checkbox] {
+	display: none;
+}
+
+label::before {
+	background-image: url("./../images/icons8-unchecked.svg");
+}
+
+:checked + label::before {
+	background-image: url("./../images/icons8-checked.svg");
+}
+
+.row.body {
+	background-color: white;
+	margin-top: 10px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.grade {
+	border: 0.1vw solid var(--grade-2);
+	opacity: unset;
+	width: 1.1vw;
+	border-radius: 10px;
+}

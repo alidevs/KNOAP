@@ -23,6 +23,7 @@ class Database:
 			return {'records': records, 'count': rowcount}
 		except (Exception, psycopg2.DatabaseError) as error:
 			self.disconnect()
+			print(error)
 			return JsonResponse({'error': str(error)}, content_type="application/json")
 
 	def connect(self):
@@ -58,6 +59,7 @@ class Database:
 		query = """INSERT INTO KNOAP.diagnosis (patient_id, prediction, confidence, index)
 				   VALUES ('%s', '%s', %d, %d) RETURNING *;""" % (patient_id, prediction, confidence, index)
 		result = self.query(query)
+<<<<<<< HEAD
 		print(f"DIAGNOSIS ADDED {result['records']}")
 		return result['records'][0]
 
@@ -74,3 +76,6 @@ class Database:
 		for key in records:
 			dictionary.append(dict(key))
 		return dictionary
+=======
+		return result['records'][0]
+>>>>>>> 4d20f221ecd5a78f3bc079644513837a21183408
