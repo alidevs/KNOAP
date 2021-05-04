@@ -43,7 +43,6 @@
 <div class="col-md-4"></div>
 <div class="col-md-4 float-right  fadeInRight animated">
 <div class="add-delet-box">
-<h5 class="delet"><a href="#"><img src="{% static 'img/close.png' %}"> Delete Patient</a></h5>
 <h5 class="add"><a href="add_patient/"><img src="{% static 'img/add.png' %}"> Add Patient</a></h5>
 </div>
 </div>
@@ -56,12 +55,12 @@
 <table class="table">
   <thead class="thead-info">
     <tr>
-      <th>
-      <div class="black-group">
-<!--          <input type="checkbox" id="css">-->
-<!--          <label for="css"></label>-->
-      </div>
-      </th>
+<!--      <th>-->
+<!--      <div class="black-group">-->
+<!--&lt;!&ndash;          <input type="checkbox" id="css">&ndash;&gt;-->
+<!--&lt;!&ndash;          <label for="css"></label>&ndash;&gt;-->
+<!--      </div>-->
+<!--      </th>-->
       <th>ID</th>
       <th>First name</th>
        <th>Last Name</th>
@@ -73,14 +72,7 @@
   <tbody>
   {%  for result in patient %}
     <tr>
-      <td>
-        <a href="#">
-       <div class="checked-group">
-      <input type="checkbox" id="one">
-      <label for="one"></label>
-      </div>
-      </a>
-      </td>
+
       <td><a href="/patient/{{ result.id }}/">#{{result.id}}</a></td>
       <td><a href="/patient/{{ result.id }}/">{{ result.fname }} </a></td>
       <td><a href="/patient/{{ result.id }}/">{{ result.lname }} </a></td>
