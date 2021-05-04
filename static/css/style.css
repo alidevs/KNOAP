@@ -272,13 +272,13 @@ padding: 25px 0;
 }
 .grade {
     float: left;
-    width: 130px;
+    width: 140px;
     text-align: center;
 }
 .footer {
     overflow: hidden;
     margin: 0 auto;
-    width: 800px;
+    width: 900px;
 }
 .grade span {
     background: red;
