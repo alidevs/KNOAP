@@ -287,7 +287,7 @@ def humanbytes(B):
         return '{0:.2f} TB'.format(B / TB)
 
 
-def delete_patient(id, request):
+def delete_patient( request,id):
     if request.session.has_key("user"):
         print(id)
         doctor = request.session['user']['id']
